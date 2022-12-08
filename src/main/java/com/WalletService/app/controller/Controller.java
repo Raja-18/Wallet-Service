@@ -8,7 +8,7 @@ import com.WalletService.app.service.WalletServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins ="http://localhost:4200")
+@CrossOrigin()
 public class Controller {
 
     private WalletService walletService = new WalletServiceImpl();
@@ -18,7 +18,7 @@ public class Controller {
         return "Welcome to Wallet App";
     }
 
-    @GetMapping("login")
+    @PostMapping("login")
     public Boolean login(@RequestBody WalletDto wallet) throws WalletException{
         return this.walletService.login(wallet.getWalletId(), wallet.getWalletPassword());
     }
@@ -39,7 +39,7 @@ public class Controller {
         return this.walletService.addFundsToWallet(walletDto.getWalletId(),walletDto.getAmount());
     }
 
-    @PostMapping("wallet-fund-transfer")
+        @PostMapping("wallet-fund-transfer")
     public Double fundTransfer(@RequestBody WalletDto walletDto) throws WalletException{
         return this.walletService.fundTransfer(walletDto.getWalletId(),walletDto.getToWalletId(),walletDto.getAmount());
     }

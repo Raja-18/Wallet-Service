@@ -16,7 +16,7 @@ public class WalletDaoImpl implements WalletDao{
 
     @Override
     public Wallet addWallet(Wallet newWallet) throws WalletException {
-        String sql = "INSERT INTO wallet_datas (id,userName,userBalance,userPassword) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO wallet (id,name,balance,password) VALUES(?,?,?,?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -35,15 +35,15 @@ public class WalletDaoImpl implements WalletDao{
 
     @Override
     public Wallet getWalletById(Integer walletId) throws WalletException {
-        String sql = "SELECT * FROM wallet_datas WHERE id = ?";
+        String sql = "SELECT * FROM wallet WHERE id = ?";
 
         try{
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1,walletId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
-                Wallet fetchedWallet = new Wallet(resultSet.getInt("id"),resultSet.getString("userName"),
-                        resultSet.getDouble("userBalance"),resultSet.getString("userPassword"));
+                Wallet fetchedWallet = new Wallet(resultSet.getInt("id"),resultSet.getString("name"),
+                        resultSet.getDouble("balance"),resultSet.getString("password"));
                 return (fetchedWallet);
             }
             else{
@@ -58,7 +58,7 @@ public class WalletDaoImpl implements WalletDao{
 
     @Override
     public Wallet updateWallet(Wallet updateWallet) throws WalletException {
-        String sql = "UPDATE wallet_datas SET userName = ?, userBalance = ?, userPassword = ? WHERE id = ?";
+        String sql = "UPDATE wallet SET name = ?, balance = ?, password = ? WHERE id = ?";
         try{
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(4,updateWallet.getId());
@@ -76,7 +76,7 @@ public class WalletDaoImpl implements WalletDao{
 
     @Override
     public Wallet deleteWalletById(Integer walletId) throws WalletException {
-        String sql = "DELETE FROM wallet_datas WHERE id = ?";
+        String sql = "DELETE FROM wallet WHERE id = ?";
         Wallet toDelete = this.getWalletById(walletId);
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -92,14 +92,14 @@ public class WalletDaoImpl implements WalletDao{
 
     @Override
     public  Map<Integer, Wallet> getWallets() {
-        String sql = "SELECT * FROM wallet_datas";
+        String sql = "SELECT * FROM wallet";
         Map<Integer,Wallet> allWallets = new HashMap<>();
         try{
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){
-                Wallet tempWallet = new Wallet(rs.getInt("id"),rs.getString("userName"),
-                        rs.getDouble("userBalance"),rs.getString("userPassword"));
+                Wallet tempWallet = new Wallet(rs.getInt("id"),rs.getString("name"),
+                        rs.getDouble("balance"),rs.getString("password"));
                 allWallets.put(tempWallet.getId(),tempWallet);
             }
         }
@@ -110,7 +110,7 @@ public class WalletDaoImpl implements WalletDao{
     }
 
     public Integer lastIdGetter(){
-        String sql = "SELECT id FROM wallet_datas ORDER BY id DESC LIMIT 1";
+        String sql = "SELECT id FROM wallet ORDER BY id DESC LIMIT 1";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();

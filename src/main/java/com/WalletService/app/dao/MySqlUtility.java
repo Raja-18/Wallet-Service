@@ -10,13 +10,17 @@ public class MySqlUtility {
         Connection connection = null;
         try {
             connection = DriverManager
-                    .getConnection("jdbc:mysql://localhost:3306/wallet", "root", "xbox18");
-            //System.out.println("Connection to MYSQL successful!");
+                    .getConnection("jdbc:mysql://sql6.freesqldatabase.com:3306/sql6582970", "sql6582970", "Es8GwBpTIv");
+            System.out.println("Connection to MYSQL successful!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return connection;
     }
+
+//    public static void main(String[] args) {
+//        getConnectionToMySQL();
+//    }
 }
 
